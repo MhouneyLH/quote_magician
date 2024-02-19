@@ -1,0 +1,36 @@
+{
+  "name": "quote_magician",
+  "version": "1.0.0",
+  "description": "An API to get nice quotes.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --pretty --respawn ./src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MhouneyLH/quote_magician.git"
+  },
+  "keywords": [],
+  "author": "Lucas Hünniger, Danny Baumgardt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MhouneyLH/quote_magician/issues"
+  },
+  "homepage": "https://github.com/MhouneyLH/quote_magician#readme",
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "@types/http-status-codes": "^1.2.0",
+    "@types/node": "^20.11.19",
+    "@types/uuid": "^9.0.8",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.4",
+    "express": "^4.18.2",
+    "http-status-codes": "^2.3.0",
+    "uuid": "^9.0.1"
+  }
+}
