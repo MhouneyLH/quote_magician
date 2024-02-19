@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --pretty --respawn ./src/app.ts",
+    "package": "zip -r lambda-package.zip build node_modules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,7 +26,8 @@
     "@types/node": "^20.11.19",
     "@types/uuid": "^9.0.8",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "zip": "^3.2.2"
   },
   "dependencies": {
     "dotenv": "^16.4.4",
