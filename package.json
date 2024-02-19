@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "An API to get nice quotes.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "ts-node-dev --pretty --respawn ./src/app.ts",
     "package": "zip -r lambda-package.zip build node_modules",
