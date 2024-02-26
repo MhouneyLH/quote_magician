@@ -1,35 +1,58 @@
 <script lang="ts">
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
 	import Quote from './quote.svelte';
+	import { onMount } from 'svelte';
+	import { getAllQuotes } from './quote_api';
+
+	let newQuoteText: string = '';
+	let newQuoteAuthor: string = '';
+
+	let quotes: { author: string; text: string; likeCount: number }[] = [];
+	const fetchAllQuotes = async () => {
+		try {
+			const bodyData = await getAllQuotes();
+			quotes = bodyData.map((quote: any) => ({
+				text: quote.text,
+				author: quote.author,
+				likeCount: quote.likeCount
+			}));
+		} catch (error) {
+			console.error('Error handling fetched data:', error);
+		}
+	};
+
+	onMount(() => {
+		fetchAllQuotes();
+	});
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Zitate</title>
+	<meta name="description" content="Zitate App" />
 </svelte:head>
 
 <section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
+	<h1>Zitat des Tages</h1>
+	<Quote text={'Platzhalter'} author={'Platzhalter'} likeCount={4}></Quote>
 
-		to your new<br />SvelteKit app
-	</h1>
+	<h1>Alle Zitate</h1>
+	<ul>
+		{#each quotes as quote}
+			<Quote text={quote.text} author={quote.author} likeCount={quote.likeCount}></Quote>
+			<button on:click={() => console.log('Delete Item')}>Delete</button>
+			<button on:click={() => console.log('Update Item')}>Update</button>
+		{/each}
+	</ul>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+	<h1>Create New Quotes</h1>
+	<label for="author">Author:</label>
+	<input type="text" id="author" bind:value={newQuoteAuthor} />
 
-	<Quote
-		text={'Wer das Kanboard nicht ehrt, ist des Kasches nicht Wert!'}
-		author={'Danny 🌲gardt'}
-	/>
-	<Quote text={'Hallo, ich kann das auch'} author={'Lucas'} />
+	<label for="quoteText">Quote Text:</label>
+	<input type="text" id="quoteText" bind:value={newQuoteText} />
+	<button
+		on:click={() => console.log(`Neuer Autor: ${newQuoteAuthor}, Neuer Text: ${newQuoteText}`)}
+		>Create Quote</button
+	>
 </section>
 
 <style>
@@ -39,25 +62,5 @@
 		justify-content: center;
 		align-items: center;
 		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
 	}
 </style>
