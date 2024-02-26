@@ -1,2 +1,3 @@
 # quote_magician
-An API to get nice quotes.
+
+Everyone loves quotes.
