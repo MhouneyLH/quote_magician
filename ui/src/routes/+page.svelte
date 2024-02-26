@@ -1,7 +1,7 @@
-<script>
-	import Counter from './Counter.svelte';
+<script lang="ts">
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import Quote from './quote.svelte';
 </script>
 
 <svelte:head>
@@ -25,7 +25,11 @@
 		try editing <strong>src/routes/+page.svelte</strong>
 	</h2>
 
-	<Counter />
+	<Quote
+		text={'Wer das Kanboard nicht ehrt, ist des Kasches nicht Wert!'}
+		author={'Danny 🌲gardt'}
+	/>
+	<Quote text={'Hallo, ich kann das auch'} author={'Lucas'} />
 </section>
 
 <style>
