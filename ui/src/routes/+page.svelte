@@ -1,16 +1,18 @@
 <script lang="ts">
-	import Quote from './quote.svelte';
+	import QuoteWidget from './quote_widget.svelte';
 	import { onMount } from 'svelte';
 	import { getAllQuotes } from './quote_api';
+	import type { Quote } from './quote';
 
 	let newQuoteText: string = '';
 	let newQuoteAuthor: string = '';
 
-	let quotes: { author: string; text: string; likeCount: number }[] = [];
+	let quotes: Quote[] = [];
 	const fetchAllQuotes = async () => {
 		try {
 			const bodyData = await getAllQuotes();
 			quotes = bodyData.map((quote: any) => ({
+				id: quote.id,
 				text: quote.text,
 				author: quote.author,
 				likeCount: quote.likeCount
@@ -18,6 +20,13 @@
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
+	};
+
+	const placeholderQuote: Quote = {
+		id: '123',
+		text: 'Zitat',
+		author: 'Autor',
+		likeCount: 4
 	};
 
 	onMount(() => {
@@ -32,12 +41,12 @@
 
 <section>
 	<h1>Zitat des Tages</h1>
-	<Quote text={'Platzhalter'} author={'Platzhalter'} likeCount={4}></Quote>
+	<QuoteWidget quote={placeholderQuote}></QuoteWidget>
 
 	<h1>Alle Zitate</h1>
 	<ul>
 		{#each quotes as quote}
-			<Quote text={quote.text} author={quote.author} likeCount={quote.likeCount}></Quote>
+			<QuoteWidget {quote}></QuoteWidget>
 			<button on:click={() => console.log('Delete Item')}>Delete</button>
 			<button on:click={() => console.log('Update Item')}>Update</button>
 		{/each}
