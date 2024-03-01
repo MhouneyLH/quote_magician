@@ -16,6 +16,20 @@ export async function getAllQuotes() {
 	}
 }
 
+export async function getDailyQuote() {
+	try {
+		const response = await fetch(`${API_URL}/daily`, {
+			method: 'GET'
+		});
+		const data = await response.json();
+
+		return JSON.parse(data['body']);
+	} catch (error) {
+		console.error('Error while getDailyQuote()', error);
+		throw error;
+	}
+}
+
 export async function createQuote(quote: Quote) {
 	try {
 		const response = await fetch(`${API_URL}/quote`, {

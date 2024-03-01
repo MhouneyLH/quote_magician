@@ -1,7 +1,7 @@
 <script lang="ts">
 	import QuoteWidget from './quote_widget.svelte';
 	import { onMount } from 'svelte';
-	import { getAllQuotes } from './quote_api';
+	import { getAllQuotes, getDailyQuote } from './quote_api';
 	import type { Quote } from './quote';
 
 	let newQuoteText: string = '';
@@ -22,15 +22,26 @@
 		}
 	};
 
-	const placeholderQuote: Quote = {
-		id: '123',
-		text: 'Zitat',
-		author: 'Autor',
-		likeCount: 4
+	let dailyQuote: Quote = {
+		id: '',
+		text: '',
+		author: '',
+		likeCount: 0
+	};
+	const fetchDailyQuote = async () => {
+		try {
+			const bodyData = await getDailyQuote();
+			dailyQuote = bodyData;
+
+			console.log('Daily Quote:', dailyQuote);
+		} catch (error) {
+			console.error('Error handling fetched data:', error);
+		}
 	};
 
 	onMount(() => {
 		fetchAllQuotes();
+		fetchDailyQuote();
 	});
 </script>
 
@@ -41,7 +52,7 @@
 
 <section>
 	<h1>Zitat des Tages</h1>
-	<QuoteWidget quote={placeholderQuote}></QuoteWidget>
+	<QuoteWidget quote={dailyQuote}></QuoteWidget>
 
 	<h1>Alle Zitate</h1>
 	<ul>
