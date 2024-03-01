@@ -1,4 +1,6 @@
-const API_URL = 'https://4l88bbgzf2.execute-api.us-east-1.amazonaws.com/v3';
+import type { Quote } from './quote';
+
+const API_URL = 'https://4l88bbgzf2.execute-api.us-east-1.amazonaws.com/v1';
 
 export async function getAllQuotes() {
 	try {
@@ -14,14 +16,14 @@ export async function getAllQuotes() {
 	}
 }
 
-export async function createQuote(quoteId: string) {
+export async function createQuote(quote: Quote) {
 	try {
-		const response = await fetch(`${API_URL}/quote?id=${quoteId}`, {
+		const response = await fetch(`${API_URL}/quote`, {
 			method: 'POST',
 			body: JSON.stringify({
-				author: 'some author',
-				text: 'some text',
-				likeCount: -10
+				author: quote.author,
+				text: quote.text,
+				likeCount: quote.likeCount
 			})
 		});
 
@@ -32,14 +34,14 @@ export async function createQuote(quoteId: string) {
 	}
 }
 
-export async function updateQuote(quoteId: string) {
+export async function updateQuote(quote: Quote) {
 	try {
-		const response = await fetch(`${API_URL}/quote?id=${quoteId}`, {
+		const response = await fetch(`${API_URL}/quote?id=${quote.id}`, {
 			method: 'PUT',
 			body: JSON.stringify({
-				author: 'some author',
-				text: 'some text',
-				likeCount: -10
+				author: quote.author,
+				text: quote.text,
+				likeCount: quote.likeCount
 			})
 		});
 
@@ -50,9 +52,9 @@ export async function updateQuote(quoteId: string) {
 	}
 }
 
-export async function deleteQuote(quoteId: string) {
+export async function deleteQuote(quote: Quote) {
 	try {
-		const response = await fetch(`${API_URL}/quote?id=${quoteId}`, {
+		const response = await fetch(`${API_URL}/quote?id=${quote.id}`, {
 			method: 'DELETE'
 		});
 
