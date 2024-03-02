@@ -1,7 +1,7 @@
 <script lang="ts">
 	import QuoteWidget from './quote_widget.svelte';
 	import { onMount } from 'svelte';
-	import { getAllQuotes, getDailyQuote, deleteQuote, createQuote } from './quote_api';
+	import { getAllQuotes, getDailyQuote, deleteQuote, createQuote, updateQuote } from './quote_api';
 	import type { Quote } from './quote';
 
 	let quotes: Quote[] = [];
@@ -58,6 +58,36 @@
 		}
 	};
 
+	let quoteToUpdate: Quote | null = null;
+
+	const startUpdateQuote = (quote: Quote) => {
+		quoteToUpdate = quote;
+	};
+
+	const performUpdateQuote = async (quote: Quote | null) => {
+		if (!quote) {
+			return;
+		}
+
+		try {
+			await updateQuote(quote);
+			fetchAllQuotes();
+			quoteToUpdate = null;
+		} catch (error) {
+			console.error('Error handling fetched data:', error);
+		}
+	};
+
+	const performLikeQuote = async (quote: Quote) => {
+		try {
+			quote.likeCount++;
+			await updateQuote(quote);
+			fetchAllQuotes();
+		} catch (error) {
+			console.error('Error handling fetched data:', error);
+		}
+	};
+
 	onMount(() => {
 		fetchAllQuotes();
 		fetchDailyQuote();
@@ -77,10 +107,21 @@
 	<ul>
 		{#each quotes as quote}
 			<QuoteWidget {quote}></QuoteWidget>
-			<button on:click={() => performDeleteQuote(quote)}>Delete</button>
-			<button on:click={() => console.log('Update Item')}>Update</button>
+			<button on:click={() => performLikeQuote(quote)}>❤️</button>
+			<button on:click={() => startUpdateQuote(quote)}>🔄</button>
+			<button on:click={() => performDeleteQuote(quote)}>🚮</button>
 		{/each}
 	</ul>
+
+	{#if quoteToUpdate}
+		<h1>Update Quote</h1>
+		<label for="quoteText">Quote Text:</label>
+		<input type="text" id="quoteText" bind:value={quoteToUpdate.text} />
+
+		<label for="author">Author:</label>
+		<input type="text" id="author" bind:value={quoteToUpdate.author} />
+		<button on:click={() => performUpdateQuote(quoteToUpdate)}>Update Quote</button>
+	{/if}
 
 	<h1>Create New Quotes</h1>
 	<label for="quoteText">Quote Text:</label>
