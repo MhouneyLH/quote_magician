@@ -1,11 +1,8 @@
 <script lang="ts">
 	import QuoteWidget from './quote_widget.svelte';
 	import { onMount } from 'svelte';
-	import { getAllQuotes, getDailyQuote } from './quote_api';
+	import { getAllQuotes, getDailyQuote, deleteQuote, createQuote } from './quote_api';
 	import type { Quote } from './quote';
-
-	let newQuoteText: string = '';
-	let newQuoteAuthor: string = '';
 
 	let quotes: Quote[] = [];
 	const fetchAllQuotes = async () => {
@@ -32,8 +29,30 @@
 		try {
 			const bodyData = await getDailyQuote();
 			dailyQuote = bodyData;
+		} catch (error) {
+			console.error('Error handling fetched data:', error);
+		}
+	};
 
-			console.log('Daily Quote:', dailyQuote);
+	const performDeleteQuote = async (quote: Quote) => {
+		try {
+			await deleteQuote(quote);
+			fetchAllQuotes();
+		} catch (error) {
+			console.error('Error handling fetched data:', error);
+		}
+	};
+
+	let newQuote: Quote = {
+		id: '',
+		text: '',
+		author: '',
+		likeCount: 0
+	};
+	const performCreateQuote = async (quote: Quote) => {
+		try {
+			await createQuote(quote);
+			fetchAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
@@ -58,21 +77,18 @@
 	<ul>
 		{#each quotes as quote}
 			<QuoteWidget {quote}></QuoteWidget>
-			<button on:click={() => console.log('Delete Item')}>Delete</button>
+			<button on:click={() => performDeleteQuote(quote)}>Delete</button>
 			<button on:click={() => console.log('Update Item')}>Update</button>
 		{/each}
 	</ul>
 
 	<h1>Create New Quotes</h1>
-	<label for="author">Author:</label>
-	<input type="text" id="author" bind:value={newQuoteAuthor} />
-
 	<label for="quoteText">Quote Text:</label>
-	<input type="text" id="quoteText" bind:value={newQuoteText} />
-	<button
-		on:click={() => console.log(`Neuer Autor: ${newQuoteAuthor}, Neuer Text: ${newQuoteText}`)}
-		>Create Quote</button
-	>
+	<input type="text" id="quoteText" bind:value={newQuote.text} />
+
+	<label for="author">Author:</label>
+	<input type="text" id="author" bind:value={newQuote.author} />
+	<button on:click={() => performCreateQuote(newQuote)}>Create Quote</button>
 </section>
 
 <style>

@@ -1,6 +1,7 @@
 import type { Quote } from './quote';
 
-const API_URL = 'https://4l88bbgzf2.execute-api.us-east-1.amazonaws.com/v1';
+const API_VERSION: string = 'v2';
+const API_URL: string = `https://o8ybjw4gjg.execute-api.us-east-1.amazonaws.com/${API_VERSION}`;
 
 export async function getAllQuotes() {
 	try {
@@ -32,14 +33,20 @@ export async function getDailyQuote() {
 
 export async function createQuote(quote: Quote) {
 	try {
+		const body = JSON.stringify({
+			author: quote.author,
+			text: quote.text,
+			likeCount: quote.likeCount
+		});
+
 		const response = await fetch(`${API_URL}/quote`, {
 			method: 'POST',
-			body: JSON.stringify({
-				author: quote.author,
-				text: quote.text,
-				likeCount: quote.likeCount
-			})
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: body
 		});
+		console.log(response);
 
 		return response;
 	} catch (error) {
@@ -52,6 +59,9 @@ export async function updateQuote(quote: Quote) {
 	try {
 		const response = await fetch(`${API_URL}/quote?id=${quote.id}`, {
 			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
 			body: JSON.stringify({
 				author: quote.author,
 				text: quote.text,
