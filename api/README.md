@@ -21,3 +21,5 @@ npm install {the_package}
 ```
 
 The dependencies will be zipped and uploaded to AWS Lambda. Use `npm install` in the directory of the lambda function to install the dependencies.
+
+Use `npm run package` int the directory of a lambda function to create a zip file that can be uploaded to AWS Lambda.
