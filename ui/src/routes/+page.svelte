@@ -104,14 +104,12 @@
 	<QuoteWidget quote={dailyQuote}></QuoteWidget>
 
 	<h1>Alle Zitate</h1>
-	<ul>
-		{#each quotes as quote}
-			<QuoteWidget {quote}></QuoteWidget>
-			<button on:click={() => performLikeQuote(quote)}>❤️</button>
-			<button on:click={() => startUpdateQuote(quote)}>🔄</button>
-			<button on:click={() => performDeleteQuote(quote)}>🚮</button>
-		{/each}
-	</ul>
+	{#each quotes as quote}
+		<QuoteWidget {quote}></QuoteWidget>
+		<button on:click={() => performLikeQuote(quote)}>❤️</button>
+		<button on:click={() => startUpdateQuote(quote)}>🔄</button>
+		<button on:click={() => performDeleteQuote(quote)}>🚮</button>
+	{/each}
 
 	{#if quoteToUpdate}
 		<h1>Update Quote</h1>
@@ -134,10 +132,9 @@
 
 <style>
 	section {
-		display: flex;
+		display: block;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
+		width: 75%;
+		margin: 0 auto;
 	}
 </style>
