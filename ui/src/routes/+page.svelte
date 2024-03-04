@@ -59,22 +59,11 @@
 		}
 	};
 
-	let quoteToUpdate: Quote | null = null;
-
-	const startUpdateQuote = (quote: Quote) => {
-		quoteToUpdate = quote;
-	};
-
-	const performUpdateQuote = async (quote: Quote | null) => {
-		if (!quote) {
-			return;
-		}
-
+	const performUpdateQuote = async (quote: Quote) => {
 		try {
 			console.log('Update quote:', quote);
 			// await updateQuote(quote);
 			// fetchAllQuotes();
-			quoteToUpdate = null;
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
@@ -110,22 +99,12 @@
 	{#each quotes as quote}
 		<QuoteWidget
 			{quote}
-			onLike={() => performLikeQuote(quote)}
-			onEdit={() => startUpdateQuote(quote)}
-			onDelete={() => performDeleteQuote(quote)}
+			on:like={() => performLikeQuote(quote)}
+			on:edit={() => performUpdateQuote(quote)}
+			on:delete={() => performDeleteQuote(quote)}
 		></QuoteWidget>
 		<div class="divider"></div>
 	{/each}
-
-	{#if quoteToUpdate}
-		<h1>Update Quote</h1>
-		<label for="quoteText">Quote Text:</label>
-		<input type="text" id="quoteText" bind:value={quoteToUpdate.text} />
-
-		<label for="author">Author:</label>
-		<input type="text" id="author" bind:value={quoteToUpdate.author} />
-		<button on:click={() => performUpdateQuote(quoteToUpdate)}>Update Quote</button>
-	{/if}
 
 	<h1>Create New Quotes</h1>
 	<label for="quoteText">Quote Text:</label>
