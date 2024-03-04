@@ -20,12 +20,7 @@
 		}
 	};
 
-	let dailyQuote: Quote = {
-		id: '',
-		text: '',
-		author: '',
-		likeCount: 0
-	};
+	let dailyQuote: Quote;
 	const fetchDailyQuote = async () => {
 		try {
 			// const bodyData = await getDailyQuote();
@@ -93,8 +88,19 @@
 
 <section>
 	<h1>Zitat des Tages</h1>
-	<QuoteWidget quote={dailyQuote}></QuoteWidget>
+	{#if dailyQuote === undefined}
+		<p>Kein Zitat des Tages vorhanden. 🙁</p>
+	{:else}
+		<QuoteWidget
+			quote={dailyQuote}
+			on:like={() => performLikeQuote(dailyQuote)}
+			on:edit={() => performUpdateQuote(dailyQuote)}
+			on:delete={() => performDeleteQuote(dailyQuote)}
+		></QuoteWidget>
+	{/if}
+</section>
 
+<section>
 	<h1>Alle Zitate</h1>
 	{#each quotes as quote}
 		<QuoteWidget
@@ -106,6 +112,9 @@
 		<div class="divider"></div>
 	{/each}
 
+	{#if quotes.length === 0}
+		<p>Keine Zitate vorhanden. 🙁</p>
+	{/if}
 	<h1>Create New Quotes</h1>
 	<label for="quoteText">Quote Text:</label>
 	<input type="text" id="quoteText" bind:value={newQuote.text} />
