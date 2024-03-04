@@ -7,6 +7,7 @@
 	let quotes: Quote[] = [];
 	const fetchAllQuotes = async () => {
 		try {
+			console.log('Fetching all quotes');
 			const bodyData = await getAllQuotes();
 			quotes = bodyData.map((quote: any) => ({
 				id: quote.id,
@@ -27,8 +28,8 @@
 	};
 	const fetchDailyQuote = async () => {
 		try {
-			const bodyData = await getDailyQuote();
-			dailyQuote = bodyData;
+			// const bodyData = await getDailyQuote();
+			// dailyQuote = bodyData;
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
@@ -36,8 +37,8 @@
 
 	const performDeleteQuote = async (quote: Quote) => {
 		try {
-			await deleteQuote(quote);
-			fetchAllQuotes();
+			// await deleteQuote(quote);
+			// fetchAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
@@ -51,8 +52,8 @@
 	};
 	const performCreateQuote = async (quote: Quote) => {
 		try {
-			await createQuote(quote);
-			fetchAllQuotes();
+			// await createQuote(quote);
+			// fetchAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
@@ -70,8 +71,9 @@
 		}
 
 		try {
-			await updateQuote(quote);
-			fetchAllQuotes();
+			console.log('Update quote:', quote);
+			// await updateQuote(quote);
+			// fetchAllQuotes();
 			quoteToUpdate = null;
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
@@ -81,8 +83,9 @@
 	const performLikeQuote = async (quote: Quote) => {
 		try {
 			quote.likeCount++;
-			await updateQuote(quote);
-			fetchAllQuotes();
+			console.log('Like quote:', quote);
+			// await updateQuote(quote);
+			// fetchAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
@@ -105,10 +108,13 @@
 
 	<h1>Alle Zitate</h1>
 	{#each quotes as quote}
-		<QuoteWidget {quote}></QuoteWidget>
-		<button on:click={() => performLikeQuote(quote)}>❤️</button>
-		<button on:click={() => startUpdateQuote(quote)}>🔄</button>
-		<button on:click={() => performDeleteQuote(quote)}>🚮</button>
+		<QuoteWidget
+			{quote}
+			onLike={() => performLikeQuote(quote)}
+			onEdit={() => startUpdateQuote(quote)}
+			onDelete={() => performDeleteQuote(quote)}
+		></QuoteWidget>
+		<div class="divider"></div>
 	{/each}
 
 	{#if quoteToUpdate}
@@ -136,5 +142,9 @@
 		flex-direction: column;
 		width: 75%;
 		margin: 0 auto;
+	}
+
+	.divider {
+		margin: 20px 0;
 	}
 </style>
