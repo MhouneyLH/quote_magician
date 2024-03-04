@@ -84,6 +84,22 @@ button {
 	font-family: inherit;
 }
 
+input {
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 5px;
+}
+
+button {
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background-color: transparent;
+}
+
+button:hover {
+	background-color: #f0f0f0;
+}
+
 button:focus:not(:focus-visible) {
 	outline: none;
 }

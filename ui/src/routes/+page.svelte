@@ -5,7 +5,20 @@
 	import type { Quote } from './quote';
 
 	let quotes: Quote[] = [];
-	const fetchAllQuotes = async () => {
+	let dailyQuote: Quote;
+	let newQuote: Quote = {
+		id: '',
+		text: '',
+		author: '',
+		likeCount: 0
+	};
+
+	let isCreateQuoteFormOpen = false;
+	const toggleCreateQuoteForm = () => {
+		isCreateQuoteFormOpen = !isCreateQuoteFormOpen;
+	};
+
+	const handleGetAllQuotes = async () => {
 		try {
 			const bodyData = await getAllQuotes();
 			quotes = bodyData.map((quote: any) => ({
@@ -19,13 +32,7 @@
 		}
 	};
 
-	let dailyQuote: Quote = {
-		id: '',
-		text: '',
-		author: '',
-		likeCount: 0
-	};
-	const fetchDailyQuote = async () => {
+	const handleGetDailyQuote = async () => {
 		try {
 			const bodyData = await getDailyQuote();
 			dailyQuote = bodyData;
@@ -34,63 +41,46 @@
 		}
 	};
 
-	const performDeleteQuote = async (quote: Quote) => {
-		try {
-			await deleteQuote(quote);
-			fetchAllQuotes();
-		} catch (error) {
-			console.error('Error handling fetched data:', error);
-		}
-	};
-
-	let newQuote: Quote = {
-		id: '',
-		text: '',
-		author: '',
-		likeCount: 0
-	};
-	const performCreateQuote = async (quote: Quote) => {
+	const handleCreateQuote = async (quote: Quote) => {
 		try {
 			await createQuote(quote);
-			fetchAllQuotes();
+			handleGetAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
 	};
 
-	let quoteToUpdate: Quote | null = null;
-
-	const startUpdateQuote = (quote: Quote) => {
-		quoteToUpdate = quote;
-	};
-
-	const performUpdateQuote = async (quote: Quote | null) => {
-		if (!quote) {
-			return;
-		}
-
+	const handleUpdateQuote = async (quote: Quote) => {
 		try {
 			await updateQuote(quote);
-			fetchAllQuotes();
-			quoteToUpdate = null;
+			handleGetAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
 	};
 
-	const performLikeQuote = async (quote: Quote) => {
+	const handleLikeQuote = async (quote: Quote) => {
 		try {
 			quote.likeCount++;
 			await updateQuote(quote);
-			fetchAllQuotes();
+			handleGetAllQuotes();
+		} catch (error) {
+			console.error('Error handling fetched data:', error);
+		}
+	};
+
+	const handleDeleteQuote = async (quote: Quote) => {
+		try {
+			await deleteQuote(quote);
+			handleGetAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
 		}
 	};
 
 	onMount(() => {
-		fetchAllQuotes();
-		fetchDailyQuote();
+		handleGetAllQuotes();
+		handleGetDailyQuote();
 	});
 </script>
 
@@ -101,43 +91,74 @@
 
 <section>
 	<h1>Zitat des Tages</h1>
-	<QuoteWidget quote={dailyQuote}></QuoteWidget>
-
-	<h1>Alle Zitate</h1>
-	<ul>
-		{#each quotes as quote}
-			<QuoteWidget {quote}></QuoteWidget>
-			<button on:click={() => performLikeQuote(quote)}>❤️</button>
-			<button on:click={() => startUpdateQuote(quote)}>🔄</button>
-			<button on:click={() => performDeleteQuote(quote)}>🚮</button>
-		{/each}
-	</ul>
-
-	{#if quoteToUpdate}
-		<h1>Update Quote</h1>
-		<label for="quoteText">Quote Text:</label>
-		<input type="text" id="quoteText" bind:value={quoteToUpdate.text} />
-
-		<label for="author">Author:</label>
-		<input type="text" id="author" bind:value={quoteToUpdate.author} />
-		<button on:click={() => performUpdateQuote(quoteToUpdate)}>Update Quote</button>
+	{#if dailyQuote === undefined}
+		<p>Kein Zitat des Tages vorhanden. 🙁</p>
+	{:else}
+		<QuoteWidget
+			quote={dailyQuote}
+			on:like={() => handleLikeQuote(dailyQuote)}
+			on:edit={() => handleUpdateQuote(dailyQuote)}
+			on:delete={() => handleDeleteQuote(dailyQuote)}
+		></QuoteWidget>
 	{/if}
+</section>
 
-	<h1>Create New Quotes</h1>
-	<label for="quoteText">Quote Text:</label>
-	<input type="text" id="quoteText" bind:value={newQuote.text} />
+<section>
+	<h1>Alle Zitate</h1>
 
-	<label for="author">Author:</label>
-	<input type="text" id="author" bind:value={newQuote.author} />
-	<button on:click={() => performCreateQuote(newQuote)}>Create Quote</button>
+	<button on:click={toggleCreateQuoteForm}>Toggle create quote form</button>
+	<div class="divider"></div>
+	{#if isCreateQuoteFormOpen}
+		<div class="create-new-quote-column">
+			<label for="quoteText">Quote Text:</label>
+			<input bind:value={newQuote.text} id="quoteText" />
+
+			<label for="quoteAuthor">Author:</label>
+			<input bind:value={newQuote.author} id="quoteAuthor" />
+
+			<button on:click={() => handleCreateQuote(newQuote)}>Add Quote</button>
+		</div>
+		<div class="divider"></div>
+	{/if}
+	<div class="divider"></div>
+
+	{#if quotes.length === 0}
+		<p>Keine Zitate vorhanden. 🙁</p>
+	{/if}
+	{#each quotes as quote}
+		<QuoteWidget
+			{quote}
+			on:like={() => handleLikeQuote(quote)}
+			on:edit={() => handleUpdateQuote(quote)}
+			on:delete={() => handleDeleteQuote(quote)}
+		></QuoteWidget>
+		<div class="divider"></div>
+	{/each}
 </section>
 
 <style>
 	section {
+		display: block;
+		flex-direction: column;
+		width: 75%;
+		margin: 0 auto;
+	}
+
+	.divider {
+		margin: 20px 0;
+	}
+
+	button {
+		font-size: medium;
+		cursor: pointer;
+	}
+
+	.create-new-quote-column {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
+		gap: 10px;
+		border: 2px dashed #ccc;
+		padding: 10px;
+		border-radius: 8px;
 	}
 </style>
