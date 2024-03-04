@@ -68,7 +68,7 @@
 
 <style>
 	.widget-border {
-		border: 1px solid #ccc;
+		border: 2px solid #ccc;
 		border-radius: 8px;
 		padding: 20px;
 		display: flex;
@@ -115,16 +115,8 @@
 	}
 
 	button {
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		background-color: transparent;
 		font-size: large;
 		cursor: pointer;
-	}
-
-	button:hover {
-		color: #888;
-		background-color: #f0f0f0;
 	}
 
 	.save-button,
@@ -135,11 +127,7 @@
 	.text-edit-input,
 	.author-edit-input {
 		width: 100%;
-		border: 1px solid #ccc;
-		border-radius: 8px;
 		margin-bottom: 10px;
-		padding: 5px;
-		margin-left: 5px;
 	}
 
 	label {
