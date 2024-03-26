@@ -1,7 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
 import { CreateQuoteUseCase } from "../../domain/interfaces/usecases/quote/create_quote";
-import { DeleteQuoteUseCase } from "../../domain/interfaces/usecases/quote/delete_contact";
+import { DeleteQuoteUseCase } from "../../domain/interfaces/usecases/quote/delete_quote";
 import { GetAllQuotesUseCase } from "../../domain/interfaces/usecases/quote/get_all_quotes";
 import { GetQuoteByIdUseCase } from "../../domain/interfaces/usecases/quote/get_quote_by_id";
 import { UpdateQuoteUseCase } from "../../domain/interfaces/usecases/quote/update_quote";

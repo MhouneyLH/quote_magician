@@ -1,6 +1,6 @@
 import { Quote } from "../../../src/domain/entities/quote_entity";
 import { CreateQuoteUseCase } from "../../../src/domain/interfaces/usecases/quote/create_quote";
-import { DeleteQuoteUseCase } from "../../../src/domain/interfaces/usecases/quote/delete_contact";
+import { DeleteQuoteUseCase } from "../../../src/domain/interfaces/usecases/quote/delete_quote";
 import { GetAllQuotesUseCase } from "../../../src/domain/interfaces/usecases/quote/get_all_quotes";
 import { GetQuoteByIdUseCase } from "../../../src/domain/interfaces/usecases/quote/get_quote_by_id";
 import { UpdateQuoteUseCase } from "../../../src/domain/interfaces/usecases/quote/update_quote";
