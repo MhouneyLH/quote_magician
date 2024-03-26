@@ -1,6 +1,6 @@
 import type { Quote } from './quote';
 
-const API_VERSION: string = 'v2';
+const API_VERSION: string = 'v1';
 const API_URL: string = `https://o8ybjw4gjg.execute-api.us-east-1.amazonaws.com/${API_VERSION}`;
 
 export async function getAllQuotes() {
