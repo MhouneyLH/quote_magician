@@ -11,7 +11,7 @@ export class MongoDBAtlasQuoteDataSource implements QuoteDataSource {
   }
 
   async getById(id: string): Promise<Quote> {
-    const result = await this.database.find({ id });
+    const result = await this.database.findOne(id);
     return result;
   }
 

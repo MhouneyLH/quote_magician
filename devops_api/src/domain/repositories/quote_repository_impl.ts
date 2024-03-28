@@ -5,24 +5,28 @@ import { QuoteRepository } from "../interfaces/repositories/quote_repository";
 export class QuoteRepositoryImpl implements QuoteRepository {
   constructor(private quoteDataSource: QuoteDataSource) {}
 
-  create(quote: Quote): Promise<Quote> {
-    const result = this.quoteDataSource.create(quote);
+  async create(quote: Quote): Promise<Quote> {
+    const result = await this.quoteDataSource.create(quote);
     return result;
   }
-  getById(id: string): Promise<Quote> {
-    const result = this.quoteDataSource.getById(id);
+
+  async getById(id: string): Promise<Quote> {
+    const result = await this.quoteDataSource.getById(id);
     return result;
   }
-  getAll(): Promise<Quote[]> {
-    const result = this.quoteDataSource.getAll();
+
+  async getAll(): Promise<Quote[]> {
+    const result = await this.quoteDataSource.getAll();
     return result;
   }
-  update(id: string, quote: Quote): Promise<Quote> {
-    const result = this.quoteDataSource.update(id, quote);
+
+  async update(id: string, quote: Quote): Promise<Quote> {
+    const result = await this.quoteDataSource.update(id, quote);
     return result;
   }
-  delete(id: string): Promise<boolean> {
-    const result = this.quoteDataSource.delete(id);
+
+  async delete(id: string): Promise<boolean> {
+    const result = await this.quoteDataSource.delete(id);
     return result;
   }
 }

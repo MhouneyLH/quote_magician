@@ -6,8 +6,9 @@ describe("MongoDBAtlas QuoteDataSource", () => {
 
   beforeAll(() => {
     database = {
-      find: jest.fn(),
       insertOne: jest.fn(),
+      find: jest.fn(),
+      findOne: jest.fn(),
       updateOne: jest.fn(),
       deleteOne: jest.fn(),
     };
@@ -36,14 +37,14 @@ describe("MongoDBAtlas QuoteDataSource", () => {
   });
 
   describe("getById", () => {
-    test("should call find with the id and return the quote", async () => {
+    test("should call findOne with the id and return the quote", async () => {
       const ds = new MongoDBAtlasQuoteDataSource(database);
       const expectedQuote = { id: "1", text: "test", author: "test", likeCount: 1 };
-      jest.spyOn(database, "find").mockImplementation(() => Promise.resolve(expectedQuote));
+      jest.spyOn(database, "findOne").mockImplementation(() => Promise.resolve(expectedQuote));
 
       const result = await ds.getById("1");
 
-      expect(database.find).toHaveBeenCalledWith({ id: "1" });
+      expect(database.findOne).toHaveBeenCalledWith("1");
       expect(result).toStrictEqual(expectedQuote);
     });
   });
