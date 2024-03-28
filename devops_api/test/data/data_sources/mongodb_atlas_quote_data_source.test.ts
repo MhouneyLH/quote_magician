@@ -21,17 +21,13 @@ describe("MongoDBAtlas QuoteDataSource", () => {
   describe("create", () => {
     test("should call insertOne with the quote and return the created quote", async () => {
       const ds = new MongoDBAtlasQuoteDataSource(database);
+      const quoteInDB = { _id: "1", text: "test", author: "test", likeCount: 1 };
       const expectedQuote = { id: "1", text: "test", author: "test", likeCount: 1 };
-      jest.spyOn(database, "insertOne").mockImplementation(() => Promise.resolve(expectedQuote));
+      jest.spyOn(database, "insertOne").mockImplementation(() => Promise.resolve(quoteInDB));
 
       const result = await ds.create(expectedQuote);
 
-      expect(database.insertOne).toHaveBeenCalledWith({
-        id: "1",
-        text: "test",
-        author: "test",
-        likeCount: 1,
-      });
+      expect(database.insertOne).toHaveBeenCalledWith(expectedQuote);
       expect(result).toStrictEqual(expectedQuote);
     });
   });
@@ -39,8 +35,9 @@ describe("MongoDBAtlas QuoteDataSource", () => {
   describe("getById", () => {
     test("should call findOne with the id and return the quote", async () => {
       const ds = new MongoDBAtlasQuoteDataSource(database);
+      const quoteInDB = { _id: "1", text: "test", author: "test", likeCount: 1 };
       const expectedQuote = { id: "1", text: "test", author: "test", likeCount: 1 };
-      jest.spyOn(database, "findOne").mockImplementation(() => Promise.resolve(expectedQuote));
+      jest.spyOn(database, "findOne").mockImplementation(() => Promise.resolve(quoteInDB));
 
       const result = await ds.getById("1");
 
@@ -52,8 +49,9 @@ describe("MongoDBAtlas QuoteDataSource", () => {
   describe("getAll", () => {
     test("should call find with an empty object and return the quotes", async () => {
       const ds = new MongoDBAtlasQuoteDataSource(database);
+      const quotesInDB = [{ _id: "1", text: "test", author: "test", likeCount: 1 }];
       const expectedQuotes = [{ id: "1", text: "test", author: "test", likeCount: 1 }];
-      jest.spyOn(database, "find").mockImplementation(() => Promise.resolve(expectedQuotes));
+      jest.spyOn(database, "find").mockImplementation(() => Promise.resolve(quotesInDB));
 
       const result = await ds.getAll();
 
@@ -65,8 +63,9 @@ describe("MongoDBAtlas QuoteDataSource", () => {
   describe("update", () => {
     test("should call updateOne with the id and quote and return the updated quote", async () => {
       const ds = new MongoDBAtlasQuoteDataSource(database);
+      const quoteInDB = { _id: "1", text: "test", author: "test", likeCount: 1 };
       const expectedQuote = { id: "1", text: "test", author: "test", likeCount: 1 };
-      jest.spyOn(database, "updateOne").mockImplementation(() => Promise.resolve(expectedQuote));
+      jest.spyOn(database, "updateOne").mockImplementation(() => Promise.resolve(quoteInDB));
 
       const result = await ds.update("1", expectedQuote);
 

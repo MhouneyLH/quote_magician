@@ -73,6 +73,7 @@ async function run() {
     });
   } catch (error) {
     console.error(error);
+    mongodbClient.close();
   }
 }
 
