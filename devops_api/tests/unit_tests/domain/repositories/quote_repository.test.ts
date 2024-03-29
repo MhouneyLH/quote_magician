@@ -1,7 +1,7 @@
-import { QuoteDataSource } from "../../../src/data/interfaces/data_sources/quote_data_source";
-import { Quote } from "../../../src/domain/entities/quote_entity";
-import { QuoteRepository } from "../../../src/domain/interfaces/repositories/quote_repository";
-import { QuoteRepositoryImpl } from "../../../src/domain/repositories/quote_repository_impl";
+import { QuoteDataSource } from "../../../../src/data/interfaces/data_sources/quote_data_source";
+import { Quote } from "../../../../src/domain/entities/quote_entity";
+import { QuoteRepository } from "../../../../src/domain/interfaces/repositories/quote_repository";
+import { QuoteRepositoryImpl } from "../../../../src/domain/repositories/quote_repository_impl";
 
 class MockQuoteDataSource implements QuoteDataSource {
   create(): Promise<Quote> {

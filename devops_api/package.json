@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --collectCoverage",
-    "dev:build": "tsc",
-    "dev:start": "ts-node src/main.ts",
-    "dev:all": "npm run dev:build && npm run dev:start"
+    "test:unit": "jest unit_tests --collectCoverage",
+    "test:integration": "jest integration_tests --watchAll --collectCoverage",
+    "dev:build": "rm -rf build && tsc",
+    "dev:serve": "ts-node src/main.ts",
+    "dev:start": "npm run dev:build && npm run dev:serve"
   },
+  "homepage": "https://github.com/MhouneyLH/quote_magician",
+  "author": "Lucas Hünniger",
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",

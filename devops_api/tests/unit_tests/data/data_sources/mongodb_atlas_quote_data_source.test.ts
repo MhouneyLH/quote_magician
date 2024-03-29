@@ -1,5 +1,5 @@
-import { MongoDBAtlasQuoteDataSource } from "../../../src/data/data_sources/mongodb_atlas_quote_data_source";
-import { DatabaseWrapper } from "../../../src/data/interfaces/data_sources/database_wrapper";
+import { MongoDBAtlasQuoteDataSource } from "../../../../src/data/data_sources/mongodb_atlas_quote_data_source";
+import { DatabaseWrapper } from "../../../../src/data/interfaces/data_sources/database_wrapper";
 
 describe("MongoDBAtlas QuoteDataSource", () => {
   let database: DatabaseWrapper;

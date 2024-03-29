@@ -1,5 +1,5 @@
-import { Quote } from "../../../../src/domain/entities/quote_entity";
-import { QuoteRepository } from "../../../../src/domain/interfaces/repositories/quote_repository";
+import { Quote } from "../../../../../src/domain/entities/quote_entity";
+import { QuoteRepository } from "../../../../../src/domain/interfaces/repositories/quote_repository";
 
 export class MockQuoteRepository implements QuoteRepository {
   create(): Promise<Quote> {
@@ -19,7 +19,7 @@ export class MockQuoteRepository implements QuoteRepository {
   }
 }
 
-describe("Create Quotes Usecase", () => {
+describe("Update Quotes Usecase", () => {
   let quoteRepository: MockQuoteRepository;
 
   beforeEach(() => {
@@ -27,12 +27,12 @@ describe("Create Quotes Usecase", () => {
     quoteRepository = new MockQuoteRepository();
   });
 
-  it("should create a quote", async () => {
+  test("should update a quote", async () => {
     const quote: Quote = { id: "1", text: "test", author: "test", likeCount: 1 };
-    jest.spyOn(quoteRepository, "create").mockResolvedValue(quote);
+    jest.spyOn(quoteRepository, "update").mockResolvedValue(quote);
 
-    const createdQuote = await quoteRepository.create();
+    const updatedQuote = await quoteRepository.update();
 
-    expect(createdQuote).toEqual(quote);
+    expect(updatedQuote).toEqual(quote);
   });
 });

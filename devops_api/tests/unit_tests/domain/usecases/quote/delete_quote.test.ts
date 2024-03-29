@@ -1,6 +1,7 @@
-import { Quote } from "../../../../src/domain/entities/quote_entity";
-import { QuoteRepository } from "../../../../src/domain/interfaces/repositories/quote_repository";
+import { Quote } from "../../../../../src/domain/entities/quote_entity";
+import { QuoteRepository } from "../../../../../src/domain/interfaces/repositories/quote_repository";
 
+// todo: on all usecase tests, there is this mock-class. How to make it less repeatable (when I put this code in a helper class, then the coverage is messed up :()
 export class MockQuoteRepository implements QuoteRepository {
   create(): Promise<Quote> {
     throw new Error("Method not implemented.");
@@ -19,7 +20,7 @@ export class MockQuoteRepository implements QuoteRepository {
   }
 }
 
-describe("Get Quote By Id Usecase", () => {
+describe("Delete Quotes Usecase", () => {
   let quoteRepository: MockQuoteRepository;
 
   beforeEach(() => {
@@ -27,12 +28,11 @@ describe("Get Quote By Id Usecase", () => {
     quoteRepository = new MockQuoteRepository();
   });
 
-  test("should get a quote by id", async () => {
-    const quote: Quote = { id: "1", text: "test", author: "test", likeCount: 1 };
-    jest.spyOn(quoteRepository, "getById").mockResolvedValue(quote);
+  test("should delete a quote", async () => {
+    jest.spyOn(quoteRepository, "delete").mockResolvedValue(true);
 
-    const quoteById = await quoteRepository.getById();
+    const deletedQuote = await quoteRepository.delete();
 
-    expect(quoteById).toEqual(quote);
+    expect(deletedQuote).toEqual(true);
   });
 });

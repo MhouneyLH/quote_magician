@@ -1,11 +1,11 @@
-import { Quote } from "../../../src/domain/entities/quote_entity";
-import { CreateQuoteUseCase } from "../../../src/domain/interfaces/usecases/quote/create_quote";
-import { DeleteQuoteUseCase } from "../../../src/domain/interfaces/usecases/quote/delete_quote";
-import { GetAllQuotesUseCase } from "../../../src/domain/interfaces/usecases/quote/get_all_quotes";
-import { GetQuoteByIdUseCase } from "../../../src/domain/interfaces/usecases/quote/get_quote_by_id";
-import { UpdateQuoteUseCase } from "../../../src/domain/interfaces/usecases/quote/update_quote";
-import QuoteRouter from "../../../src/presentation/routers/quote_router";
-import server from "../../../src/server";
+import { Quote } from "../../../../src/domain/entities/quote_entity";
+import { CreateQuoteUseCase } from "../../../../src/domain/interfaces/usecases/quote/create_quote";
+import { DeleteQuoteUseCase } from "../../../../src/domain/interfaces/usecases/quote/delete_quote";
+import { GetAllQuotesUseCase } from "../../../../src/domain/interfaces/usecases/quote/get_all_quotes";
+import { GetQuoteByIdUseCase } from "../../../../src/domain/interfaces/usecases/quote/get_quote_by_id";
+import { UpdateQuoteUseCase } from "../../../../src/domain/interfaces/usecases/quote/update_quote";
+import QuoteRouter from "../../../../src/presentation/routers/quote_router";
+import server from "../../../../src/server";
 import request from "supertest";
 
 class MockCreateQuoteUseCase implements CreateQuoteUseCase {

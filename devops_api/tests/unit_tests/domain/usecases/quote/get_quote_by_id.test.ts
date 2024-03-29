@@ -1,5 +1,5 @@
-import { Quote } from "../../../../src/domain/entities/quote_entity";
-import { QuoteRepository } from "../../../../src/domain/interfaces/repositories/quote_repository";
+import { Quote } from "../../../../../src/domain/entities/quote_entity";
+import { QuoteRepository } from "../../../../../src/domain/interfaces/repositories/quote_repository";
 
 export class MockQuoteRepository implements QuoteRepository {
   create(): Promise<Quote> {
@@ -19,7 +19,7 @@ export class MockQuoteRepository implements QuoteRepository {
   }
 }
 
-describe("Get All Quotes Usecase", () => {
+describe("Get Quote By Id Usecase", () => {
   let quoteRepository: MockQuoteRepository;
 
   beforeEach(() => {
@@ -27,15 +27,12 @@ describe("Get All Quotes Usecase", () => {
     quoteRepository = new MockQuoteRepository();
   });
 
-  test("should get all quotes", async () => {
-    const quotes: Quote[] = [
-      { id: "1", text: "test", author: "test", likeCount: 1 },
-      { id: "2", text: "test", author: "test", likeCount: 1 },
-    ];
-    jest.spyOn(quoteRepository, "getAll").mockResolvedValue(quotes);
+  test("should get a quote by id", async () => {
+    const quote: Quote = { id: "1", text: "test", author: "test", likeCount: 1 };
+    jest.spyOn(quoteRepository, "getById").mockResolvedValue(quote);
 
-    const allQuotes = await quoteRepository.getAll();
+    const quoteById = await quoteRepository.getById();
 
-    expect(allQuotes).toEqual(quotes);
+    expect(quoteById).toEqual(quote);
   });
 });
