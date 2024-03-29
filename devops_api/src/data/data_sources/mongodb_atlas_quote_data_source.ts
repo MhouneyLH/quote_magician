@@ -7,7 +7,8 @@ export class MongoDBAtlasQuoteDataSource implements QuoteDataSource {
 
   async create(quote: Quote): Promise<Quote> {
     const result = await this.database.insertOne(quote);
-    return this.getMappedDatabaseScheme(result);
+    const quoteId: string = result["insertedId"];
+    return this.getById(quoteId);
   }
 
   async getById(id: string): Promise<Quote> {
@@ -25,13 +26,15 @@ export class MongoDBAtlasQuoteDataSource implements QuoteDataSource {
   }
 
   async update(id: string, quote: Quote): Promise<Quote> {
-    const result = await this.database.updateOne(id, quote);
-    return this.getMappedDatabaseScheme(result);
+    await this.database.updateOne(id, quote);
+    const updatedQuote = await this.getById(id);
+    return updatedQuote;
   }
 
   async delete(id: string): Promise<boolean> {
     const result = await this.database.deleteOne(id);
-    return result;
+    const isDeleted: boolean = result["deletedCount"] !== 0;
+    return isDeleted;
   }
 
   private getMappedDatabaseScheme(quote: any): Quote {

@@ -21,13 +21,16 @@ describe("MongoDBAtlas QuoteDataSource", () => {
   describe("create", () => {
     test("should call insertOne with the quote and return the created quote", async () => {
       const ds = new MongoDBAtlasQuoteDataSource(database);
-      const quoteInDB = { _id: "1", text: "test", author: "test", likeCount: 1 };
+      const dbInsertResponse = { acknowledged: true, insertedId: "1" };
+      const dbFindResponse = { _id: "1", text: "test", author: "test", likeCount: 1 };
       const expectedQuote = { id: "1", text: "test", author: "test", likeCount: 1 };
-      jest.spyOn(database, "insertOne").mockImplementation(() => Promise.resolve(quoteInDB));
+      jest.spyOn(database, "insertOne").mockImplementation(() => Promise.resolve(dbInsertResponse));
+      jest.spyOn(database, "findOne").mockImplementation(() => Promise.resolve(dbFindResponse));
 
       const result = await ds.create(expectedQuote);
 
       expect(database.insertOne).toHaveBeenCalledWith(expectedQuote);
+      expect(database.findOne).toHaveBeenCalledWith("1");
       expect(result).toStrictEqual(expectedQuote);
     });
   });

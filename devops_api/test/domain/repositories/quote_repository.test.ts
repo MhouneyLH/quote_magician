@@ -37,7 +37,7 @@ describe("Quote Repository", () => {
       jest.spyOn(quoteDataSource, "create").mockResolvedValue(quote);
 
       const createdQuote = await quoteRepository.create(quote);
-      expect(createdQuote).toEqual(quote);
+      expect(createdQuote).toStrictEqual(quote);
     });
   });
 
@@ -47,7 +47,7 @@ describe("Quote Repository", () => {
       jest.spyOn(quoteDataSource, "getById").mockResolvedValue(quote);
 
       const quoteById = await quoteRepository.getById("1");
-      expect(quoteById).toEqual(quote);
+      expect(quoteById).toStrictEqual(quote);
     });
   });
 
@@ -60,7 +60,7 @@ describe("Quote Repository", () => {
       jest.spyOn(quoteDataSource, "getAll").mockResolvedValue(quotes);
 
       const allQuotes = await quoteRepository.getAll();
-      expect(allQuotes).toEqual(quotes);
+      expect(allQuotes).toStrictEqual(quotes);
     });
   });
 
@@ -70,7 +70,7 @@ describe("Quote Repository", () => {
       jest.spyOn(quoteDataSource, "update").mockResolvedValue(quote);
 
       const updatedQuote = await quoteRepository.update("1", quote);
-      expect(updatedQuote).toEqual(quote);
+      expect(updatedQuote).toStrictEqual(quote);
     });
   });
 
