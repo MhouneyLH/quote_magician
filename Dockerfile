@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:21-alpine as build
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ EXPOSE 5173
 CMD ["npm", "run", "dev"]
 
 
-FROM node:18-alpine as deploy
+FROM node:21-alpine as deploy
 
 WORKDIR /app
 

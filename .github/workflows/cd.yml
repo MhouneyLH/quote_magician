@@ -1,4 +1,4 @@
-name: Continuous Deployment for the DevOps Quotes API
+name: Continuous Deployment for the Quotes Website
 
 on:
   workflow_dispatch:
