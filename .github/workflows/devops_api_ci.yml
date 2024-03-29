@@ -27,9 +27,8 @@ jobs:
       - name: Run unit tests
         run: npm run test:unit
 
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@v3
-        if: always()
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
         with:
-          name: test-results
-          path: coverage/
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: MhouneyLH/quote_magician
