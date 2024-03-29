@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watchAll --collectCoverage",
     "dev:build": "tsc",
-    "dev:start": "ts-node src/main.ts"
+    "dev:start": "ts-node src/main.ts",
+    "dev:all": "npm run dev:build && npm run dev:start"
   },
   "keywords": [],
   "author": "",
