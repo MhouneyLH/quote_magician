@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "package": "zip -r package.zip ."
-  },
-  "dependencies": {
-    "uuid": "^9.0.1"
-  }
-}
