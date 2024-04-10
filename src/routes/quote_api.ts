@@ -1,90 +1,192 @@
 import type { Quote } from './quote';
 
-const API_VERSION: string = 'v1';
-const API_URL: string = `https://o8ybjw4gjg.execute-api.us-east-1.amazonaws.com/${API_VERSION}`;
-
-export async function getAllQuotes() {
-	try {
-		const response = await fetch(`${API_URL}/quotes`, {
-			method: 'GET'
-		});
-		const data = await response.json();
-
-		return JSON.parse(data['body']);
-	} catch (error) {
-		console.error('Error while getAllQuotes()', error);
-		throw error;
-	}
+export interface QuoteAPI {
+	getAllQuotes(): Promise<Quote[]>;
+	getDailyQuote(): Promise<Quote>;
+	createQuote(quote: Quote): Promise<Response>;
+	updateQuote(quote: Quote): Promise<Response>;
+	deleteQuote(quote: Quote): Promise<Response>;
 }
 
-export async function getDailyQuote() {
-	try {
-		const response = await fetch(`${API_URL}/daily`, {
-			method: 'GET'
-		});
-		const data = await response.json();
+export class AWSLambdaQuoteAPI implements QuoteAPI {
+	private API_VERSION: string = 'v2';
+	private API_URL: string = `https://o8ybjw4gjg.execute-api.us-east-1.amazonaws.com/${this.API_VERSION}`;
 
-		return JSON.parse(data['body']);
-	} catch (error) {
-		console.error('Error while getDailyQuote()', error);
-		throw error;
+	async getAllQuotes(): Promise<Quote[]> {
+		try {
+			const response = await fetch(`${this.API_URL}/quotes`, {
+				method: 'GET'
+			});
+			const data = await response.json();
+
+			return JSON.parse(data['body']);
+		} catch (error) {
+			console.error('Error while getAllQuotes()', error);
+			throw error;
+		}
 	}
-}
 
-export async function createQuote(quote: Quote) {
-	try {
-		const body = JSON.stringify({
-			author: quote.author,
-			text: quote.text,
-			likeCount: quote.likeCount
-		});
+	async getDailyQuote(): Promise<Quote> {
+		try {
+			const response = await fetch(`${this.API_URL}/daily`, {
+				method: 'GET'
+			});
+			const data = await response.json();
 
-		const response = await fetch(`${API_URL}/quote`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: body
-		});
-		console.log(response);
-
-		return response;
-	} catch (error) {
-		console.error('Error while createQuote()', error);
-		throw error;
+			return JSON.parse(data['body']);
+		} catch (error) {
+			console.error('Error while getDailyQuote()', error);
+			throw error;
+		}
 	}
-}
 
-export async function updateQuote(quote: Quote) {
-	try {
-		const response = await fetch(`${API_URL}/quote?id=${quote.id}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
+	async createQuote(quote: Quote): Promise<Response> {
+		try {
+			const body = JSON.stringify({
 				author: quote.author,
 				text: quote.text,
 				likeCount: quote.likeCount
-			})
-		});
+			});
 
-		return response;
-	} catch (error) {
-		console.error('Error while updateQuote()', error);
-		throw error;
+			const response = await fetch(`${this.API_URL}/quote`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: body
+			});
+
+			return response;
+		} catch (error) {
+			console.error('Error while createQuote()', error);
+			throw error;
+		}
+	}
+
+	async updateQuote(quote: Quote): Promise<Response> {
+		try {
+			const body = JSON.stringify({
+				author: quote.author,
+				text: quote.text,
+				likeCount: quote.likeCount
+			});
+
+			const response = await fetch(`${this.API_URL}/quote?id=${quote.id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: body
+			});
+
+			return response;
+		} catch (error) {
+			console.error('Error while updateQuote()', error);
+			throw error;
+		}
+	}
+
+	async deleteQuote(quote: Quote): Promise<Response> {
+		try {
+			const response = await fetch(`${this.API_URL}/quote?id=${quote.id}`, {
+				method: 'DELETE'
+			});
+
+			return response;
+		} catch (error) {
+			console.error('Error while deleteQuote()', error);
+			throw error;
+		}
 	}
 }
 
-export async function deleteQuote(quote: Quote) {
-	try {
-		const response = await fetch(`${API_URL}/quote?id=${quote.id}`, {
-			method: 'DELETE'
-		});
+export class DevopsQuoteAPI implements QuoteAPI {
+	private API_URL: string = 'your_api_url';
 
-		return response;
-	} catch (error) {
-		console.error('Error while deleteQuote()', error);
-		throw error;
+	async getAllQuotes(): Promise<Quote[]> {
+		try {
+			const response = await fetch(`${this.API_URL}/quotes`, {
+				method: 'GET'
+			});
+			const data = await response.json();
+
+			return JSON.parse(data['body']);
+		} catch (error) {
+			console.error('Error while getAllQuotes()', error);
+			throw error;
+		}
+	}
+
+	async getDailyQuote(): Promise<Quote> {
+		try {
+			const response = await fetch(`${this.API_URL}/daily`, {
+				method: 'GET'
+			});
+			const data = await response.json();
+
+			return JSON.parse(data['body']);
+		} catch (error) {
+			console.error('Error while getDailyQuote()', error);
+			throw error;
+		}
+	}
+
+	async createQuote(quote: Quote): Promise<Response> {
+		try {
+			const body = JSON.stringify({
+				author: quote.author,
+				text: quote.text,
+				likeCount: quote.likeCount
+			});
+
+			const response = await fetch(`${this.API_URL}/quote`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: body
+			});
+
+			return response;
+		} catch (error) {
+			console.error('Error while createQuote()', error);
+			throw error;
+		}
+	}
+
+	async updateQuote(quote: Quote): Promise<Response> {
+		try {
+			const body = JSON.stringify({
+				author: quote.author,
+				text: quote.text,
+				likeCount: quote.likeCount
+			});
+
+			const response = await fetch(`${this.API_URL}/quotes/${quote.id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: body
+			});
+
+			return response;
+		} catch (error) {
+			console.error('Error while updateQuote()', error);
+			throw error;
+		}
+	}
+
+	async deleteQuote(quote: Quote): Promise<Response> {
+		try {
+			const response = await fetch(`${this.API_URL}/quotes/${quote.id}`, {
+				method: 'DELETE'
+			});
+
+			return response;
+		} catch (error) {
+			console.error('Error while deleteQuote()', error);
+			throw error;
+		}
 	}
 }

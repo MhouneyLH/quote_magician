@@ -1,8 +1,10 @@
 <script lang="ts">
 	import QuoteWidget from './quote_widget.svelte';
 	import { onMount } from 'svelte';
-	import { getAllQuotes, getDailyQuote, deleteQuote, createQuote, updateQuote } from './quote_api';
+	import { type QuoteAPI, AWSLambdaQuoteAPI  } from './quote_api';
 	import type { Quote } from './quote';
+
+	let quoteApi: QuoteAPI = new AWSLambdaQuoteAPI();
 
 	let quotes: Quote[] = [];
 	let dailyQuote: Quote;
@@ -20,7 +22,7 @@
 
 	const handleGetAllQuotes = async () => {
 		try {
-			const bodyData = await getAllQuotes();
+			const bodyData = await quoteApi.getAllQuotes();
 			quotes = bodyData.map((quote: any) => ({
 				id: quote.id,
 				text: quote.text,
@@ -34,7 +36,7 @@
 
 	const handleGetDailyQuote = async () => {
 		try {
-			const bodyData = await getDailyQuote();
+			const bodyData = await quoteApi.getDailyQuote();
 			dailyQuote = bodyData;
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
@@ -43,7 +45,7 @@
 
 	const handleCreateQuote = async (quote: Quote) => {
 		try {
-			await createQuote(quote);
+			await quoteApi.createQuote(quote);
 			handleGetAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
@@ -52,7 +54,7 @@
 
 	const handleUpdateQuote = async (quote: Quote) => {
 		try {
-			await updateQuote(quote);
+			await quoteApi.updateQuote(quote);
 			handleGetAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
@@ -62,7 +64,7 @@
 	const handleLikeQuote = async (quote: Quote) => {
 		try {
 			quote.likeCount++;
-			await updateQuote(quote);
+			await quoteApi.updateQuote(quote);
 			handleGetAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
@@ -71,7 +73,7 @@
 
 	const handleDeleteQuote = async (quote: Quote) => {
 		try {
-			await deleteQuote(quote);
+			await quoteApi.deleteQuote(quote);
 			handleGetAllQuotes();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
