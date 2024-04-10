@@ -1,8 +1,9 @@
 <script lang="ts">
-	import QuoteWidget from './quote_widget.svelte';
+	import QuoteWidget from '../components/quote_widget.svelte';
 	import { onMount } from 'svelte';
-	import { type QuoteAPI, AWSLambdaQuoteAPI  } from './quote_api';
-	import type { Quote } from './quote';
+	import { type QuoteAPI } from '../lib/quote/api/quote_api';
+	import { AWSLambdaQuoteAPI } from '../lib/quote/api/aws_lambda_quote_api';
+	import { type Quote } from '../lib/quote/quote';
 
 	let quoteApi: QuoteAPI = new AWSLambdaQuoteAPI();
 

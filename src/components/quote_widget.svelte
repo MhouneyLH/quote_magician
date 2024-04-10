@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Quote } from './quote';
+	import type { Quote } from '../lib/quote/quote';
 	import { createEventDispatcher } from 'svelte';
 
 	export let quote: Quote;
