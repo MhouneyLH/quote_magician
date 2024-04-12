@@ -20,6 +20,7 @@ WORKDIR /app
 COPY --from=build /app .
 
 ARG PUBLIC_DEPLOYMENT_ENVIRONMENT=devops
+ARG PUBLIC_QUOTE_API_ADDRESS=localhost
 
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 

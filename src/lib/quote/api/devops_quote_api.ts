@@ -1,8 +1,9 @@
 import type { Quote } from '../quote';
 import type { QuoteAPI } from './quote_api';
+import { env } from '$env/dynamic/public';
 
 export class DevopsQuoteAPI implements QuoteAPI {
-	private API_URL: string = 'http://0d4e8b20d617:4000';
+	private API_URL: string = `http://${env.PUBLIC_QUOTE_API_ADDRESS}:4000`;
 
 	async getAllQuotes(): Promise<Quote[]> {
 		try {
