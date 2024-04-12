@@ -5,9 +5,9 @@
 	import { AWSLambdaQuoteAPI } from '../lib/quote/api/aws_lambda_quote_api';
 	import { type Quote } from '../lib/quote/quote';
 	import { DevopsQuoteAPI } from '../lib/quote/api/devops_quote_api';
-	import { env } from '$env/dynamic/public';
+	import { env } from '$env/static/private';
 
-	const deploymentEnv: string = env.PUBLIC_DEPLOYMENT_ENVIRONMENT;
+	const deploymentEnv: string = env.DEPLOYMENT_ENVIRONMENT;
 	console.log('Got deployment environment:', deploymentEnv);
 
 	let quoteApi: QuoteAPI;
