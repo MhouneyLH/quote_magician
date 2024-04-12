@@ -2,7 +2,7 @@ import type { Quote } from '../quote';
 import type { QuoteAPI } from './quote_api';
 
 export class DevopsQuoteAPI implements QuoteAPI {
-	private API_URL: string = 'your_api_url';
+	private API_URL: string = 'localhost:4000';
 
 	async getAllQuotes(): Promise<Quote[]> {
 		try {

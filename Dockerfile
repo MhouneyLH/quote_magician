@@ -19,7 +19,10 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-ENV HOST = 0.0.0.0
-EXPOSE 4173
+# ENV HOST = 0.0.0.0
+ARG PUBLIC_DEPLOYMENT_ENVIRONMENT=devops
 
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+# CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
+
+EXPOSE 4173

@@ -4,8 +4,18 @@
 	import { type QuoteAPI } from '../lib/quote/api/quote_api';
 	import { AWSLambdaQuoteAPI } from '../lib/quote/api/aws_lambda_quote_api';
 	import { type Quote } from '../lib/quote/quote';
+	import { DevopsQuoteAPI } from '../lib/quote/api/devops_quote_api';
+	import { env } from '$env/dynamic/public';
 
-	let quoteApi: QuoteAPI = new AWSLambdaQuoteAPI();
+	const deploymentEnv: string = env.PUBLIC_DEPLOYMENT_ENVIRONMENT;
+	console.log('Got deployment environment:', deploymentEnv);
+
+	let quoteApi: QuoteAPI;
+	if (deploymentEnv === 'devops') {
+		quoteApi = new DevopsQuoteAPI();
+	} else {
+		quoteApi = new AWSLambdaQuoteAPI();
+	}
 
 	let quotes: Quote[] = [];
 	let dailyQuote: Quote;
