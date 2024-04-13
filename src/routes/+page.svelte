@@ -1,16 +1,19 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
+	import { onMount } from 'svelte';
 	import QuoteWidget from '../components/quote_widget.svelte';
 	import { type Quote } from '../lib/quote/quote';
-	import {
-		_handleCreateQuote,
-		_handleDeleteQuote,
-		_handleLikeQuote,
-		_handleUpdateQuote
-	} from './+page.server';
 
 	export let data: any;
 	let quotes: Quote[] = data.quotes;
 	let dailyQuote: Quote = data.dailyQuote;
+
+	async function refreshQuotes() {
+		await invalidateAll();
+
+		quotes = data.quotes;
+		dailyQuote = data.dailyQuote;
+	}
 
 	let newQuote: Quote = {
 		id: '',
@@ -23,6 +26,50 @@
 	const toggleCreateQuoteForm = () => {
 		isCreateQuoteFormOpen = !isCreateQuoteFormOpen;
 	};
+
+	async function createQuote(quote: Quote) {
+		const response = await fetch('/', {
+			method: 'POST',
+			body: JSON.stringify(quote)
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to create quote');
+		}
+
+		await refreshQuotes();
+	}
+
+	async function updateQuote(quote: Quote) {
+		const response = await fetch('/', {
+			method: 'PUT',
+			body: JSON.stringify(quote)
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to update quote');
+		}
+
+		await refreshQuotes();
+	}
+
+	async function likeQuote(quote: Quote) {
+		const newQuote: Quote = { ...quote, likeCount: quote.likeCount + 1 };
+		await updateQuote(newQuote);
+	}
+
+	async function deleteQuote(quote: Quote) {
+		const response = await fetch('/', {
+			method: 'DELETE',
+			body: JSON.stringify(quote)
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to delete quote');
+		}
+
+		await refreshQuotes();
+	}
 </script>
 
 <svelte:head>
@@ -37,9 +84,9 @@
 	{:else}
 		<QuoteWidget
 			quote={dailyQuote}
-			on:like={() => _handleLikeQuote(dailyQuote)}
-			on:edit={() => _handleUpdateQuote(dailyQuote)}
-			on:delete={() => _handleDeleteQuote(dailyQuote)}
+			on:like={() => likeQuote(dailyQuote)}
+			on:edit={() => updateQuote(dailyQuote)}
+			on:delete={() => deleteQuote(dailyQuote)}
 		></QuoteWidget>
 	{/if}
 </section>
@@ -57,7 +104,7 @@
 			<label for="quoteAuthor">Author:</label>
 			<input bind:value={newQuote.author} id="quoteAuthor" />
 
-			<button on:click={() => _handleCreateQuote(newQuote)}>Add Quote</button>
+			<button on:click={() => createQuote(newQuote)}>Add Quote</button>
 		</div>
 		<div class="divider"></div>
 	{/if}
@@ -71,9 +118,9 @@
 		{#each quotes as quote}
 			<QuoteWidget
 				{quote}
-				on:like={() => _handleLikeQuote(quote)}
-				on:edit={() => _handleUpdateQuote(quote)}
-				on:delete={() => _handleDeleteQuote(quote)}
+				on:like={() => likeQuote(quote)}
+				on:edit={() => updateQuote(quote)}
+				on:delete={() => deleteQuote(quote)}
 			></QuoteWidget>
 			<div class="divider"></div>
 		{/each}

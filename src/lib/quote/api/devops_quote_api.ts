@@ -4,7 +4,7 @@ import type { QuoteAPI } from './quote_api';
 import { Logger } from '$lib/utils/logger';
 
 export class DevopsQuoteAPI implements QuoteAPI {
-	private API_URL: string = `http://host.docker.internal:4000`;
+	private API_URL: string = `http://api:4000`;
 	// private API_URL: string = `http://${env.PUBLIC_QUOTE_API_ADDRESS}:4000`;
 
 	async getAllQuotes(): Promise<Quote[]> {
@@ -56,16 +56,17 @@ export class DevopsQuoteAPI implements QuoteAPI {
 			Logger.log('Creating quote');
 			Logger.log(body);
 
-			const response = await fetch(`${this.API_URL}/quote`, {
+			const response = await fetch(`${this.API_URL}/quotes`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: body
 			});
+			const data = await response.json();
 
 			Logger.log('Created quote');
-			Logger.log(JSON.stringify(response));
+			Logger.log(data);
 
 			return response;
 		} catch (error) {
@@ -92,9 +93,10 @@ export class DevopsQuoteAPI implements QuoteAPI {
 				},
 				body: body
 			});
+			const data = await response.json();
 
 			Logger.log('Updated quote');
-			Logger.log(JSON.stringify(response));
+			Logger.log(data);
 
 			return response;
 		} catch (error) {

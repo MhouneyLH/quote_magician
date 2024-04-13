@@ -2,6 +2,9 @@ services:
   api:
     container_name: api
     image: mhouney/quote_magician_devops_api:latest
+    # build:
+    #   context: ../quote_magician_devops_api
+    #   dockerfile: Dockerfile
     ports:
       - "4000:4000"
     networks:
@@ -21,6 +24,9 @@ services:
         condition: service_healthy
     container_name: website
     image: mhouney/quote_magician_website:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     ports:
       - "5173:5173"
     networks:
