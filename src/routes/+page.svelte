@@ -1,24 +1,13 @@
 <script lang="ts">
 	import QuoteWidget from '../components/quote_widget.svelte';
-	import { onMount } from 'svelte';
-	import { type QuoteAPI } from '../lib/quote/api/quote_api';
-	import { AWSLambdaQuoteAPI } from '../lib/quote/api/aws_lambda_quote_api';
 	import { type Quote } from '../lib/quote/quote';
-	import { DevopsQuoteAPI } from '../lib/quote/api/devops_quote_api';
-	import { invalidateAll } from '$app/navigation';
-	// import { env } from '$env/static/public';
+	import {
+		_handleCreateQuote,
+		_handleDeleteQuote,
+		_handleLikeQuote,
+		_handleUpdateQuote
+	} from './+page.server';
 
-	// const deploymentEnv: string = env.PUBLIC_DEPLOYMENT_ENVIRONMENT;
-	// console.log('Got deployment environment:', deploymentEnv);
-
-	// let quoteApi: QuoteAPI;
-	// if (deploymentEnv === 'devops') {
-	// 	quoteApi = new DevopsQuoteAPI();
-	// } else {
-	// 	quoteApi = new AWSLambdaQuoteAPI();
-	// }
-
-	let quoteApi = new DevopsQuoteAPI();
 	export let data: any;
 	let quotes: Quote[] = data.quotes;
 	let dailyQuote: Quote = data.dailyQuote;
@@ -34,43 +23,6 @@
 	const toggleCreateQuoteForm = () => {
 		isCreateQuoteFormOpen = !isCreateQuoteFormOpen;
 	};
-
-	const handleCreateQuote = async (quote: Quote) => {
-		try {
-			await quoteApi.createQuote(quote);
-			invalidateAll();
-		} catch (error) {
-			console.error('Error handling fetched data:', error);
-		}
-	};
-
-	const handleUpdateQuote = async (quote: Quote) => {
-		try {
-			await quoteApi.updateQuote(quote);
-			invalidateAll();
-		} catch (error) {
-			console.error('Error handling fetched data:', error);
-		}
-	};
-
-	const handleLikeQuote = async (quote: Quote) => {
-		try {
-			quote.likeCount++;
-			await quoteApi.updateQuote(quote);
-			invalidateAll();
-		} catch (error) {
-			console.error('Error handling fetched data:', error);
-		}
-	};
-
-	const handleDeleteQuote = async (quote: Quote) => {
-		try {
-			await quoteApi.deleteQuote(quote);
-			invalidateAll();
-		} catch (error) {
-			console.error('Error handling fetched data:', error);
-		}
-	};
 </script>
 
 <svelte:head>
@@ -85,9 +37,9 @@
 	{:else}
 		<QuoteWidget
 			quote={dailyQuote}
-			on:like={() => handleLikeQuote(dailyQuote)}
-			on:edit={() => handleUpdateQuote(dailyQuote)}
-			on:delete={() => handleDeleteQuote(dailyQuote)}
+			on:like={() => _handleLikeQuote(dailyQuote)}
+			on:edit={() => _handleUpdateQuote(dailyQuote)}
+			on:delete={() => _handleDeleteQuote(dailyQuote)}
 		></QuoteWidget>
 	{/if}
 </section>
@@ -105,7 +57,7 @@
 			<label for="quoteAuthor">Author:</label>
 			<input bind:value={newQuote.author} id="quoteAuthor" />
 
-			<button on:click={() => handleCreateQuote(newQuote)}>Add Quote</button>
+			<button on:click={() => _handleCreateQuote(newQuote)}>Add Quote</button>
 		</div>
 		<div class="divider"></div>
 	{/if}
@@ -119,9 +71,9 @@
 		{#each quotes as quote}
 			<QuoteWidget
 				{quote}
-				on:like={() => handleLikeQuote(quote)}
-				on:edit={() => handleUpdateQuote(quote)}
-				on:delete={() => handleDeleteQuote(quote)}
+				on:like={() => _handleLikeQuote(quote)}
+				on:edit={() => _handleUpdateQuote(quote)}
+				on:delete={() => _handleDeleteQuote(quote)}
 			></QuoteWidget>
 			<div class="divider"></div>
 		{/each}
