@@ -5,18 +5,19 @@
 	import { AWSLambdaQuoteAPI } from '../lib/quote/api/aws_lambda_quote_api';
 	import { type Quote } from '../lib/quote/quote';
 	import { DevopsQuoteAPI } from '../lib/quote/api/devops_quote_api';
-	import { env } from '$env/static/private';
+	// import { env } from '$env/static/public';
 
-	const deploymentEnv: string = env.DEPLOYMENT_ENVIRONMENT;
-	console.log('Got deployment environment:', deploymentEnv);
+	// const deploymentEnv: string = env.PUBLIC_DEPLOYMENT_ENVIRONMENT;
+	// console.log('Got deployment environment:', deploymentEnv);
 
-	let quoteApi: QuoteAPI;
-	if (deploymentEnv === 'devops') {
-		quoteApi = new DevopsQuoteAPI();
-	} else {
-		quoteApi = new AWSLambdaQuoteAPI();
-	}
+	// let quoteApi: QuoteAPI;
+	// if (deploymentEnv === 'devops') {
+	// 	quoteApi = new DevopsQuoteAPI();
+	// } else {
+	// 	quoteApi = new AWSLambdaQuoteAPI();
+	// }
 
+	let quoteApi = new DevopsQuoteAPI();
 	let quotes: Quote[] = [];
 	let dailyQuote: Quote;
 	let newQuote: Quote = {

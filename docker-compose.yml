@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  api:
+    container_name: api
+    image: mhouney/quote_magician_devops_api:latest
+    ports:
+      - "4000:4000"
+    networks:
+      - app_network
+    environment:
+      MONGODB_ATLAS_USERNAME: ${MONGODB_ATLAS_USERNAME}
+      MONGODB_ATLAS_PASSWORD: ${MONGODB_ATLAS_PASSWORD}
+  website:
+    container_name: website
+    image: mhouney/quote_magician_website:latest
+    ports:
+      - "5173:5173"
+    networks:
+      - app_network
+    environment:
+      MONGODB_ATLAS_USERNAME: ${MONGODB_ATLAS_USERNAME}
+      MONGODB_ATLAS_PASSWORD: ${MONGODB_ATLAS_PASSWORD}
+      PUBLIC_DEPLOYMENT_ENVIRONMENT: devops
+
+networks:
+  app_network:
+    driver: bridge
