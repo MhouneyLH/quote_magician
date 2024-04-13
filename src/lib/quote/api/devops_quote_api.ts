@@ -4,7 +4,7 @@ import type { QuoteAPI } from './quote_api';
 import { Logger } from '$lib/utils/logger';
 
 export class DevopsQuoteAPI implements QuoteAPI {
-	private API_URL: string = `http://localhost:4000`;
+	private API_URL: string = `http://host.docker.internal:4000`;
 	// private API_URL: string = `http://${env.PUBLIC_QUOTE_API_ADDRESS}:4000`;
 
 	async getAllQuotes(): Promise<Quote[]> {

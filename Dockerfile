@@ -10,8 +10,6 @@ COPY . ./
 
 RUN npm run build
 
-CMD ["npm", "run", "dev"]
-
 
 FROM node:21-alpine as deploy
 
