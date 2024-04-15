@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import { onMount } from 'svelte';
 	import QuoteWidget from '../components/quote_widget.svelte';
 	import { type Quote } from '../lib/quote/quote';
 
