@@ -11,5 +11,5 @@
 		"strict": true,
 		"moduleResolution": "bundler"
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.svelte"]
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.svelte","tests/**/*.ts"]
 }
