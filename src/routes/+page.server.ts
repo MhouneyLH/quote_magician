@@ -29,6 +29,10 @@ export const load = async ({ fetch }) => {
 		// }
 		try {
 			const dailyQuote = await fetch('http://api:4000/quotes/daily');
+			if (!dailyQuote.ok) {
+				return undefined;
+			}
+
 			return dailyQuote.json();
 		} catch (error) {
 			console.error('Error handling fetched data:', error);
